@@ -1,31 +1,14 @@
 mod completer;
+mod commands;
 
-use clap::{Parser, Subcommand};
 use rustyline::{Editor, Result};
 use rustyline::error::ReadlineError;
 use crate::completer::MyHelper;
-
-#[derive(Subcommand)]
-enum Commands {
-    Configure {
-        #[arg(short, long, value_name = "VALUE")]
-        option1: Option<String>,
-    },
-    Start,
-    Stop,
-    Troubleshoot,
-}
-
-#[derive(clap::Parser)]
-#[command(name = "Your CLI Name")]
-#[command(about = "A brief description of your CLI application")]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
+use crate::commands::{Cli, Commands, available_commands};
+use clap::Parser;
 
 fn main() -> Result<()> {
-    let commands = vec!["configure", "start", "stop", "troubleshoot"];
+    let commands = available_commands();
     let helper = MyHelper { commands };
 
     // Initialize the Editor
