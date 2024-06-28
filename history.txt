@@ -6,3 +6,8 @@ start
 q
 start
 q
+configure
+start
+q
+configure
+q

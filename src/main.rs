@@ -1,10 +1,13 @@
 mod completer;
 mod commands;
+mod command_handler;
+
 
 use rustyline::{Editor, Result};
 use rustyline::error::ReadlineError;
 use crate::completer::MyHelper;
-use crate::commands::{Cli, Commands, available_commands};
+use crate::commands::{Cli, available_commands};
+use crate::command_handler::handle_command;
 use clap::Parser;
 
 fn main() -> Result<()> {
@@ -40,28 +43,7 @@ fn main() -> Result<()> {
                     }
                 };
 
-                match &cli.command {
-                    Commands::Configure { option1 } => {
-                        if let Some(val) = option1 {
-                            println!("Option 1 value: {}", val);
-                            // Implement configuration logic here
-                        } else {
-                            println!("No value provided for option1.");
-                        }
-                    }
-                    Commands::Start => {
-                        // Handle start command
-                        println!("Starting...");
-                    }
-                    Commands::Stop => {
-                        // Handle stop command
-                        println!("Stopping...");
-                    }
-                    Commands::Troubleshoot => {
-                        // Handle troubleshoot command
-                        println!("Troubleshooting...");
-                    }
-                }
+                handle_command(&cli.command);
             }
             Err(ReadlineError::Interrupted) => {
                 println!("CTRL-C");
